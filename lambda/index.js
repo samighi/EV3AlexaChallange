@@ -56,17 +56,17 @@ const CancelAndStopIntentHandler = {
     }
 };
 const additionRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition');
-    },
-    handle(handlerInput) {
-.
-        const speakOutput = 'adding two numbers';
-        return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .getResponse();
-    }
+//     canHandle(handlerInput) {
+//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+//             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition');
+//     },
+//     handle(handlerInput) {
+// .
+//         const speakOutput = 'adding two numbers';
+//         return handlerInput.responseBuilder
+//         .speak(speakOutput)
+//         .getResponse();
+//     }
 };
 
 const SessionEndedRequestHandler = {
