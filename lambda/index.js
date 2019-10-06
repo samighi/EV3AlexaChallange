@@ -63,7 +63,7 @@ const additionRequestHandler = {
     handle(handlerInput) {
 .
         const speakOutput = 'adding two numbers';
-        return handlerInput.responseBuilder.
+        return handlerInput.responseBuilder
         .speak(speakOutput)
         .getResponse();
     }
