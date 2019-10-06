@@ -59,7 +59,7 @@ const additionIntentHandler = {
     },
     handle: function (handlerInput) {
 
-        let command = 'Addinting'
+        let command = 'adding'
         // if (!command) {
         //     return handlerInput.responseBuilder
         //         .speak("Can you repeat that?")
