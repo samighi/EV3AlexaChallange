@@ -79,15 +79,14 @@ const additionIntentHandler = {
     handle: function (handlerInput) {
 
         let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
-        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
+        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
         speed = Math.max(1, Math.min(100, parseInt(speed)));
         Util.putSessionAttribute(handlerInput, 'speed', speed);
 
  const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
             {
-                type: 'move',
-                direction: direction,
-                duration: duration,
+                type: 'add',
+                numberone: numberone
                 speed: speed
             });
             
