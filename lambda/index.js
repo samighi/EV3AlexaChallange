@@ -79,25 +79,30 @@ const additionIntentHandler = {
     handle: function (handlerInput) {
 
         // Bound speed to (1-100)
-        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
-        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
+       
        // speed = Math.max(1, Math.min(100, parseInt(speed)));
       //    Util.putSessionAttribute(handlerInput, 'speed', speed);
+      
+       const attributesManager = handlerInput.attributesManager;
 
-    //   const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
-    //         {
-    //             type: 'add',
-    //             direction: '1',
-    //             duration: '2',
-    //             speed: 'speed'
-    //         });
+        const endpointId = attributesManager.getSessionAttributes().endpointId || [];
+         let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
+        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
+
+      const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'add',
+                direction: '1',
+                duration: '2',
+                speed: 'speed'
+            });
 
 
 
         return handlerInput.responseBuilder
             .speak(`doing addition`)
             .reprompt("awaiting command")
-           // .addDirective(directive)
+            .addDirective(directive)
             .getResponse();
     }
 };
