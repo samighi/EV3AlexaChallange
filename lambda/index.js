@@ -91,17 +91,17 @@ const additionIntentHandler = {
 
       const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
             {
-                type: 'add',
-                direction: '1',
-                duration: '2',
-                speed: 'speed'
+                type: 'command',
+                command: 'add',
+                one: numberone,
+                two: 'numbertwo'
             });
 
 
 
         return handlerInput.responseBuilder
             .speak(`let me ask EV3`)
-         //   .reprompt("")
+            .reprompt("awaiting command")
             .addDirective(directive)
             .getResponse();
     }
