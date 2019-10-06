@@ -71,6 +71,33 @@ const SetSpeedIntentHandler = {
     }
 };
 
+const additionIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
+    },
+    handle: function (handlerInput) {
+
+        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
+        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
+        speed = Math.max(1, Math.min(100, parseInt(speed)));
+        Util.putSessionAttribute(handlerInput, 'speed', speed);
+
+ const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'move',
+                direction: direction,
+                duration: duration,
+                speed: speed
+            });
+            
+        return handlerInput.responseBuilder
+            .speak(`adding two numbers`)
+            .reprompt("awaiting command")
+            .getResponse();
+    }
+};
+
 // Construct and send a custom directive to the connected gadget with
 // data from the MoveIntent request.
 const MoveIntentHandler = {
