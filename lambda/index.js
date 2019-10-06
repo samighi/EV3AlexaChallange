@@ -1,130 +1,89 @@
-// This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK (v2).
-// Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
-// session persistence, api calls, and more.
+/*
+ * Copyright 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ *
+ * You may not use this file except in compliance with the terms and conditions 
+ * set forth in the accompanying LICENSE.TXT file.
+ *
+ * THESE MATERIALS ARE PROVIDED ON AN "AS IS" BASIS. AMAZON SPECIFICALLY DISCLAIMS, WITH 
+ * RESPECT TO THESE MATERIALS, ALL WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY, INCLUDING 
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+*/
+
+// This sample demonstrates sending directives to an Echo connected gadget from an Alexa skill
+// using the Alexa Skills Kit SDK (v2). Please visit https://alexa.design/cookbook for additional
+// examples on implementing slots, dialog management, session persistence, api calls, and more.
+
 const Alexa = require('ask-sdk-core');
+const Util = require('./util');
+const Common = require('./common');
+
+// The namespace of the custom directive to be sent by this skill
+const NAMESPACE = 'Custom.Mindstorms.Gadget';
+
+// The name of the custom directive to be sent this skill
+const NAME_CONTROL = 'control';
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
-    handle(handlerInput) {
-        const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+    handle: async function(handlerInput) {
+
+        let request = handlerInput.requestEnvelope;
+        let { apiEndpoint, apiAccessToken } = request.context.System;
+        let apiResponse = await Util.getConnectedEndpoints(apiEndpoint, apiAccessToken);
+        if ((apiResponse.endpoints || []).length === 0) {
+            return handlerInput.responseBuilder
+            .speak(`I couldn't find an EV3 Brick connected to this Echo device. Please check to make sure your EV3 Brick is connected, and try again.`)
             .getResponse();
-    }
-};
-const HelloWorldIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Hello World!';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};
-const HelpIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        }
+
+        // Store the gadget endpointId to be used in this skill session
+        let endpointId = apiResponse.endpoints[0].endpointId || [];
+        Util.putSessionAttribute(handlerInput, 'endpointId', endpointId);
 
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak("Welcome, you can start issuing move commands")
+            .reprompt("Awaiting commands")
             .getResponse();
     }
 };
-const CancelAndStopIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
-                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
-const additionRequestHandler = {
-//     canHandle(handlerInput) {
-//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-//             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition');
-//     },
-//     handle(handlerInput) {
-// .
-//         const speakOutput = 'adding two numbers';
-//         return handlerInput.responseBuilder
-//         .speak(speakOutput)
-//         .getResponse();
-//     }
 
+
+// Construct and send a custom directive to the connected gadget with data from
+// the SetCommandIntent request.
+const additionIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
     },
-    handle(handlerInput) {
-        const speakOutput = 'adding two numbers';
+    handle: function (handlerInput) {
 
+        let command = 'Addinting'
+        // if (!command) {
+        //     return handlerInput.responseBuilder
+        //         .speak("Can you repeat that?")
+        //         .reprompt("What was that again?").getResponse();
+        // }
+
+        const attributesManager = handlerInput.attributesManager;
+        let endpointId = attributesManager.getSessionAttributes().endpointId || [];
+        // let speed = attributesManager.getSessionAttributes().speed || "50";
+        let mState = attributesManager.getSessionAttributes().machinestate || "";
+
+        // Construct the directive with the payload containing the move parameters
+       
+           const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'add',
+                 numberone: "add 1 and 2 ",
+                 numbertwo: "add 1 and 2 ",
+            });
+            
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
-};
-
-const SessionEndedRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
-    },
-    handle(handlerInput) {
-        // Any cleanup logic goes here.
-        return handlerInput.responseBuilder.getResponse();
-    }
-};
-
-// The intent reflector is used for interaction model testing and debugging.
-// It will simply repeat the intent the user said. You can create custom handlers
-// for your intents by defining them above, then also adding them to the request
-// handler chain below.
-const IntentReflectorHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest';
-    },
-    handle(handlerInput) {
-        const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = `You just triggered ${intentName}`;
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};
-
-// Generic error handling to capture any syntax or routing errors. If you receive an error
-// stating the request handler chain is not found, you have not implemented a handler for
-// the intent being invoked or included it in the skill builder below.
-const ErrorHandler = {
-    canHandle() {
-        return true;
-    },
-    handle(handlerInput, error) {
-        console.log(`~~~~ Error handled: ${error.stack}`);
-        const speakOutput = `Sorry, I had trouble doing what you asked. Please try again.`;
-
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak(`Working on adding two numer`)
+            .reprompt("awaiting command")
+            .addDirective(directive)
             .getResponse();
     }
 };
@@ -135,14 +94,17 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
-        HelpIntentHandler,
-        CancelAndStopIntentHandler,
-        SessionEndedRequestHandler,
-        additionRequestHandler,
-        IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+        additionIntentHandler,
+        // SetSpeedIntentHandler,
+        // SetCommandIntentHandler,
+        // MoveIntentHandler,
+        Common.HelpIntentHandler,
+        Common.CancelAndStopIntentHandler,
+        Common.SessionEndedRequestHandler,
+        Common.IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
     )
+    .addRequestInterceptors(Common.RequestInterceptor)
     .addErrorHandlers(
-        ErrorHandler,
+        Common.ErrorHandler,
     )
     .lambda();
