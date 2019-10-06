@@ -87,6 +87,7 @@ const additionIntentHandler = {
             {
                 type: 'add',
                 numberone: numberone
+                numbertwo: numbertwo
                 speed: speed
             });
             
