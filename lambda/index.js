@@ -55,7 +55,7 @@ const CancelAndStopIntentHandler = {
             .getResponse();
     }
 };
-const SessionEndedRequestHandler = {
+const additionRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
@@ -69,7 +69,7 @@ const SessionEndedRequestHandler = {
     }
 };
 
-const additionRequestHandler = {
+const SessionEndedRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
     },
