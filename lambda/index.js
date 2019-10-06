@@ -84,20 +84,20 @@ const additionIntentHandler = {
        // speed = Math.max(1, Math.min(100, parseInt(speed)));
       //    Util.putSessionAttribute(handlerInput, 'speed', speed);
 
-      const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
-            {
-                type: 'add',
-                direction: 1,
-                duration: duration,
-                speed: speed
-            });
+    //   const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+    //         {
+    //             type: 'add',
+    //             direction: 1,
+    //             duration: duration,
+    //             speed: speed
+    //         });
 
 
 
         return handlerInput.responseBuilder
             .speak(`doing addition`)
             .reprompt("awaiting command")
-            .addDirective(directive)
+         //   .addDirective(directive)
             .getResponse();
     }
 };
@@ -187,10 +187,11 @@ exports.handler = Alexa.SkillBuilders.custom()
         SetSpeedIntentHandler,
         SetCommandIntentHandler,
         MoveIntentHandler,
+        additionIntentHandler,
         Common.HelpIntentHandler,
         Common.CancelAndStopIntentHandler,
         Common.SessionEndedRequestHandler,
-        additionIntentHandler,
+
         Common.IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
     )
     .addRequestInterceptors(Common.RequestInterceptor)
