@@ -100,7 +100,7 @@ const additionIntentHandler = {
 
 
         return handlerInput.responseBuilder
-            .speak(`doing addition`)
+            .speak(`let me ask EV3`)
             .reprompt("awaiting command")
             .addDirective(directive)
             .getResponse();
