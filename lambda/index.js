@@ -101,7 +101,7 @@ const additionIntentHandler = {
 
         return handlerInput.responseBuilder
             .speak(`let me ask EV3`)
-            .reprompt("awaiting command")
+         //   .reprompt("")
             .addDirective(directive)
             .getResponse();
     }
