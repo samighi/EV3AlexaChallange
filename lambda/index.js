@@ -76,8 +76,8 @@ const additionIntentHandler = {
            const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
             {
                 type: 'add',
-                 numberone: "add 1 and 2 ",
-                 numbertwo: "add 1 and 2 ",
+                 numberone: "1",
+                 numbertwo: "2"
             });
             
         return handlerInput.responseBuilder
