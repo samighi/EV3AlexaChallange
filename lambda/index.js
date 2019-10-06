@@ -84,9 +84,20 @@ const additionIntentHandler = {
        // speed = Math.max(1, Math.min(100, parseInt(speed)));
       //    Util.putSessionAttribute(handlerInput, 'speed', speed);
 
+      const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'add',
+                direction: 1,
+                duration: 2,
+                speed: 3
+            });
+
+
+
         return handlerInput.responseBuilder
             .speak(`doing addition`)
             .reprompt("awaiting command")
+            .addDirective(directive)
             .getResponse();
     }
 };
