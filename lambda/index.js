@@ -94,7 +94,7 @@ const additionIntentHandler = {
                 type: 'command',
                 command: 'add',
                 one: numberone,
-                two: 'numbertwo'
+                two: numbertwo
             });
 
 
