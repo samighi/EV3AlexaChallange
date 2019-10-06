@@ -52,41 +52,41 @@ const LaunchRequestHandler = {
 
 // Construct and send a custom directive to the connected gadget with data from
 // the SetCommandIntent request.
-const additionIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
-    },
-    handle: function (handlerInput) {
+// const additionIntentHandler = {
+//     canHandle(handlerInput) {
+//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+//             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
+//     },
+//     handle: function (handlerInput) {
 
-        let command = 'adding'
-        // if (!command) {
-        //     return handlerInput.responseBuilder
-        //         .speak("Can you repeat that?")
-        //         .reprompt("What was that again?").getResponse();
-        // }
+//         let command = 'adding'
+//         // if (!command) {
+//         //     return handlerInput.responseBuilder
+//         //         .speak("Can you repeat that?")
+//         //         .reprompt("What was that again?").getResponse();
+//         // }
 
-        const attributesManager = handlerInput.attributesManager;
-        let endpointId = attributesManager.getSessionAttributes().endpointId || [];
-        // let speed = attributesManager.getSessionAttributes().speed || "50";
-        let mState = attributesManager.getSessionAttributes().machinestate || "";
+//         const attributesManager = handlerInput.attributesManager;
+//         let endpointId = attributesManager.getSessionAttributes().endpointId || [];
+//         // let speed = attributesManager.getSessionAttributes().speed || "50";
+//         let mState = attributesManager.getSessionAttributes().machinestate || "";
 
-        // Construct the directive with the payload containing the move parameters
+//         // Construct the directive with the payload containing the move parameters
        
-           const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
-            {
-                type: 'add',
-                 numberone: "1",
-                 numbertwo: "2"
-            });
+//           const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+//             {
+//                 type: 'add',
+//                  numberone: "1",
+//                  numbertwo: "2"
+//             });
             
-        return handlerInput.responseBuilder
-            .speak(`Working on adding two numer`)
-            .reprompt("awaiting command")
-            .addDirective(directive)
-            .getResponse();
-    }
-};
+//         return handlerInput.responseBuilder
+//             .speak(`Working on adding two numer`)
+//             .reprompt("awaiting command")
+//             .addDirective(directive)
+//             .getResponse();
+//     }
+// };
 
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
