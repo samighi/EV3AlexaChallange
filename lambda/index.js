@@ -88,8 +88,8 @@ const additionIntentHandler = {
             {
                 type: 'add',
                 direction: 1,
-                duration: 2,
-                speed: 3
+                duration: duration,
+                speed: speed
             });
 
 
