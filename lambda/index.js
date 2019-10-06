@@ -97,7 +97,7 @@ const additionIntentHandler = {
         return handlerInput.responseBuilder
             .speak(`doing addition`)
             .reprompt("awaiting command")
-            .addDirective(directive)
+           // .addDirective(directive)
             .getResponse();
     }
 };
