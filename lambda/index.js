@@ -179,6 +179,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         Common.HelpIntentHandler,
         Common.CancelAndStopIntentHandler,
         Common.SessionEndedRequestHandler,
+        additionIntentHandler,
         Common.IntentReflectorHandler, // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
     )
     .addRequestInterceptors(Common.RequestInterceptor)
