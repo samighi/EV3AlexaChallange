@@ -49,44 +49,103 @@ const LaunchRequestHandler = {
     }
 };
 
+// Add the speed value to the session attribute.
+// This allows other intent handler to use the specified speed value
+// without asking the user for input.
+const SetSpeedIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetSpeedIntent';
+    },
+    handle: function (handlerInput) {
+
+        // Bound speed to (1-100)
+        let speed = Alexa.getSlotValue(handlerInput.requestEnvelope, 'Speed');
+        speed = Math.max(1, Math.min(100, parseInt(speed)));
+        Util.putSessionAttribute(handlerInput, 'speed', speed);
+
+        return handlerInput.responseBuilder
+            .speak(`speed set to ${speed} percent.`)
+            .reprompt("awaiting command")
+            .getResponse();
+    }
+};
+
+// Construct and send a custom directive to the connected gadget with
+// data from the MoveIntent request.
+const MoveIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MoveIntent';
+    },
+    handle: function (handlerInput) {
+        const request = handlerInput.requestEnvelope;
+        const direction = Alexa.getSlotValue(request, 'Direction');
+
+        // Duration is optional, use default if not available
+        const duration = Alexa.getSlotValue(request, 'Duration') || "2";
+
+        // Get data from session attribute
+        const attributesManager = handlerInput.attributesManager;
+        const speed = attributesManager.getSessionAttributes().speed || "50";
+        const endpointId = attributesManager.getSessionAttributes().endpointId || [];
+
+        // Construct the directive with the payload containing the move parameters
+        const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'move',
+                direction: direction,
+                duration: duration,
+                speed: speed
+            });
+
+        const speechOutput = (direction === "brake")
+            ?  "Applying brake"
+            : `${direction} ${duration} seconds at ${speed} percent speed`;
+
+        return handlerInput.responseBuilder
+            .speak(speechOutput)
+            .reprompt("awaiting command")
+            .addDirective(directive)
+            .getResponse();
+    }
+};
 
 // Construct and send a custom directive to the connected gadget with data from
 // the SetCommandIntent request.
-// const additionIntentHandler = {
-//     canHandle(handlerInput) {
-//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-//             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'addition';
-//     },
-//     handle: function (handlerInput) {
+const SetCommandIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SetCommandIntent';
+    },
+    handle: function (handlerInput) {
 
-//         let command = 'adding'
-//         // if (!command) {
-//         //     return handlerInput.responseBuilder
-//         //         .speak("Can you repeat that?")
-//         //         .reprompt("What was that again?").getResponse();
-//         // }
+        let command = Alexa.getSlotValue(handlerInput.requestEnvelope, 'Command');
+        if (!command) {
+            return handlerInput.responseBuilder
+                .speak("Can you repeat that?")
+                .reprompt("What was that again?").getResponse();
+        }
 
-//         const attributesManager = handlerInput.attributesManager;
-//         let endpointId = attributesManager.getSessionAttributes().endpointId || [];
-//         // let speed = attributesManager.getSessionAttributes().speed || "50";
-//         let mState = attributesManager.getSessionAttributes().machinestate || "";
+        const attributesManager = handlerInput.attributesManager;
+        let endpointId = attributesManager.getSessionAttributes().endpointId || [];
+        let speed = attributesManager.getSessionAttributes().speed || "50";
 
-//         // Construct the directive with the payload containing the move parameters
-       
-//           const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
-//             {
-//                 type: 'add',
-//                  numberone: "1",
-//                  numbertwo: "2"
-//             });
-            
-//         return handlerInput.responseBuilder
-//             .speak(`Working on adding two numer`)
-//             .reprompt("awaiting command")
-//             .addDirective(directive)
-//             .getResponse();
-//     }
-// };
+        // Construct the directive with the payload containing the move parameters
+        let directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'command',
+                command: command,
+                speed: speed
+            });
+
+        return handlerInput.responseBuilder
+            .speak(`command ${command} activated`)
+            .reprompt("awaiting command")
+            .addDirective(directive)
+            .getResponse();
+    }
+};
 
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
@@ -94,10 +153,9 @@ const LaunchRequestHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        additionIntentHandler,
-        // SetSpeedIntentHandler,
-        // SetCommandIntentHandler,
-        // MoveIntentHandler,
+        SetSpeedIntentHandler,
+        SetCommandIntentHandler,
+        MoveIntentHandler,
         Common.HelpIntentHandler,
         Common.CancelAndStopIntentHandler,
         Common.SessionEndedRequestHandler,
