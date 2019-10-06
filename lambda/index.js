@@ -87,7 +87,7 @@ const additionIntentHandler = {
       const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
             {
                 type: 'add',
-                direction: 1,
+                direction: '1',
                 duration: duration,
                 speed: speed
             });
