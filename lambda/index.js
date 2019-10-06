@@ -79,12 +79,13 @@ const additionIntentHandler = {
     handle: function (handlerInput) {
 
         // Bound speed to (1-100)
-        let speed = Alexa.getSlotValue(handlerInput.requestEnvelope, 'Speed');
-        speed = Math.max(1, Math.min(100, parseInt(speed)));
-        Util.putSessionAttribute(handlerInput, 'speed', speed);
+        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
+        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numbertwo');
+       // speed = Math.max(1, Math.min(100, parseInt(speed)));
+      //    Util.putSessionAttribute(handlerInput, 'speed', speed);
 
         return handlerInput.responseBuilder
-            .speak(`speed set to ${speed} percent.`)
+            .speak(`doing addition`)
             .reprompt("awaiting command")
             .getResponse();
     }
