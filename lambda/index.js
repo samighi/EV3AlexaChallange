@@ -228,7 +228,10 @@ exports.handler = Alexa.SkillBuilders.custom()
         SetSpeedIntentHandler,
         SetCommandIntentHandler,
         MoveIntentHandler,
+        // Saman 
         additionIntentHandler,
+        primefactorsIntentHandler
+        // Saman
         Common.HelpIntentHandler,
         Common.CancelAndStopIntentHandler,
         Common.SessionEndedRequestHandler,
