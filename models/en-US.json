@@ -1,0 +1,139 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "ev three",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "homework",
+          "slots": [],
+          "samples": [
+            "about homework",
+            "Do my homework"
+          ]
+        },
+        {
+          "name": "addition",
+          "slots": [
+            {
+              "name": "numberone",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "one"
+              ]
+            },
+            {
+              "name": "numbertwo",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "add  {numberone} plus  {numbertwo} ",
+            "add  {numberone} and  {numbertwo} ",
+            "what is  {numberone} plus  {numbertwo}",
+            "to add {numberone} and {numbertwo}"
+          ]
+        },
+        {
+          "name": "primefactors",
+          "slots": [
+            {
+              "name": "numberone",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "prime factors for {numberone}",
+            "what is primar factor for {numberone}",
+            "what  are prime factors for {numberone}"
+          ]
+        }
+      ],
+      "types": []
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "addition",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "numberone",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.953389979889.1037899438721"
+              }
+            },
+            {
+              "name": "numbertwo",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.953389979889.1308558608093"
+              }
+            }
+          ],
+          "delegationStrategy": "ALWAYS"
+        },
+        {
+          "name": "homework",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.933834178152"
+          },
+          "slots": []
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Confirm.Intent.933834178152",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what is the math problem?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.953389979889.1037899438721",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What numbers do you want to add "
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.953389979889.1308558608093",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what is the second number"
+          }
+        ]
+      }
+    ]
+  },
+  "version": "5"
+}

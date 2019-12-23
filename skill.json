@@ -1,0 +1,23 @@
+{
+  "manifest": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:575956873414:function:e8985800-bdea-421c-955d-347372ff08cb:Release_0"
+        },
+        "interfaces": [
+          {
+            "type": "CUSTOM_INTERFACE"
+          }
+        ]
+      }
+    },
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "name": "homework2"
+        }
+      }
+    }
+  }
+}
