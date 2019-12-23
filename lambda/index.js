@@ -122,8 +122,8 @@ const primefactorsIntentHandler = {
        const attributesManager = handlerInput.attributesManager;
 
         const endpointId = attributesManager.getSessionAttributes().endpointId || [];
-         let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
-        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 0);
+        let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
+        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
 
       const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
             {
