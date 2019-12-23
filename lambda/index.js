@@ -43,8 +43,8 @@ const LaunchRequestHandler = {
         Util.putSessionAttribute(handlerInput, 'endpointId', endpointId);
 
         return handlerInput.responseBuilder
-            .speak("Welcome, you can start issuing move commands")
-            .reprompt("Awaiting commands")
+            .speak("Welcome, you can ask EV3 to do your homework. You can say things like add 1 and 2")
+            .reprompt("You can say things like add 1 and 2 ")
             .getResponse();
     }
 };
