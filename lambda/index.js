@@ -107,6 +107,42 @@ const additionIntentHandler = {
     }
 };
 
+const primefactorsIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'primefactors';
+    },
+    handle: function (handlerInput) {
+
+        // Bound speed to (1-100)
+       
+       // speed = Math.max(1, Math.min(100, parseInt(speed)));
+      //    Util.putSessionAttribute(handlerInput, 'speed', speed);
+      
+       const attributesManager = handlerInput.attributesManager;
+
+        const endpointId = attributesManager.getSessionAttributes().endpointId || [];
+         let numberone = Alexa.getSlotValue(handlerInput.requestEnvelope, 'numberone');
+        let numbertwo = Alexa.getSlotValue(handlerInput.requestEnvelope, 0);
+
+      const directive = Util.build(endpointId, NAMESPACE, NAME_CONTROL,
+            {
+                type: 'command',
+                command: 'primefactors',
+                one: numberone,
+                two: numbertwo
+            });
+
+
+
+        return handlerInput.responseBuilder
+            .speak(`let me ask EV3`)
+            .reprompt("what's next? add 33 and 22? ")
+            .addDirective(directive)
+            .getResponse();
+    }
+};
+
 // Construct and send a custom directive to the connected gadget with
 // data from the MoveIntent request.
 const MoveIntentHandler = {
