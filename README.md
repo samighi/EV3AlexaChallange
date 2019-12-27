@@ -1,6 +1,10 @@
 # EV3AlexaChallange
 EV3 Alexa Challenge Hacker.io
 
+## Video 
+
+http://services.toreken.net/hackerioalexa/IMG_0662.m4v
+
 ## Essential code 
 
 ### mission - EV3 .py 
